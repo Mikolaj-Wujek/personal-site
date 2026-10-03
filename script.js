@@ -1,12 +1,27 @@
 const canvas = document.getElementById("MyCanvas")
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
+const scale = 3
+canvas.width = Math.ceil(window.innerWidth / scale)
+canvas.height = Math.ceil(window.innerHeight / scale)
 
 const ctx = canvas.getContext("2d")
 
-const margin = 80
+const margin = 27
 const turn = 0.05
-const spacing = 8
+const spacing = 3
+
+const widths = [2, 3, 3.5, 3.5, 3, 2.5, 2, 1.5, 1, 0.7]
+const palette = [
+    "#ffb3b5", // light pink
+    "#ff8a8c", // salmon pink
+    "#e8607c", // medium pink
+    "#ff4d4f", // --red
+    "#d93235", // strong red
+    "#b3191c", // --red-deep
+    "#a8385a", // dark pink
+    "#8a1417", // dark red
+    "#5c0f11", // --red-dark
+]
+
 
 
 class Fish {
@@ -14,8 +29,9 @@ class Fish {
         this.x = x
         this.y = y
         this.angle = angle
-        this.speed = 1
+        this.speed = 0.35
         this.segments = []
+        this.color = palette[Math.floor(Math.random() * palette.length)]
         for (let i = 0; i < 10; i++) {
             this.segments.push({x: x, y: y})
         }
@@ -50,20 +66,30 @@ class Fish {
     draw() {
         for (let i = 0; i < this.segments.length; i++) {
             ctx.beginPath()
-            ctx.arc(this.segments[i].x,this.segments[i].y, 10 - i, 0, Math.PI * 2)
-            ctx.fillStyle = "red"
+            ctx.arc(this.segments[i].x,this.segments[i].y, widths[i], 0, Math.PI * 2)
+            ctx.fillStyle = this.color
             ctx.fill()
         }
     }
 }
 
-const fish = new Fish(100, 100, 0)
+const school = []
+for (let i = 0; i < 5; i++) {
+    const newX = Math.random() * canvas.width
+    const newY = Math.random() * canvas.height
+    const angle = Math.random() * Math.PI * 2
+    school.push(new Fish(newX, newY, angle))
+}
+
 
 function loop() {
     
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    fish.update()
-    fish.draw()
+    for (let i = 0; i < school.length; i++) {
+        school[i].update()
+        school[i].draw()
+    }
+
 
     requestAnimationFrame(loop)
 }
