@@ -8,6 +8,7 @@
     --red: #ff4d4f;
     --red-deep: #b3191c;
     --red-dark: #5c0f11;
+    --red-muted: #c98a8b;
 }
 
 body {
@@ -34,12 +35,44 @@ body {
 .post {
     background: var(--raised);
     text-align: left;
+    padding: 1rem;
+}
+
+.post a::before {
+    content: "#!";
+}
+
+.posts {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 a {
     color: var(--red);
-    font-family: "Space Mono", monospace;
     text-decoration: none;
+    padding: 0 0.25em;
+    transition: background-color 0.12s ease-out, color 0.12s ease-out;
+}
+
+a[aria-current="page"]::before {
+    content: "> ";
+}
+
+a:hover,
+a:focus-visible {
+    background: var(--red);
+    color: var(--bg);
+}
+
+a:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
+}
+
+a:active {
+    background: var(--red-deep);
+    color: var(--text);
 }
 
 nav ul {
@@ -52,6 +85,8 @@ nav ul {
 
 h1, h2, h3 {
     font-family: "VT323", monospace;
+    margin-top: 0;
+    line-height: 1;
 }
 
 h1 {
@@ -63,5 +98,15 @@ h2 {
 }
 
 h3 {
-    font-size: 2.5rem;
+    font-size: 1.2rem;
+    font-family: "Space Mono", monospace;
+    border-bottom: 2px dashed var(--border);
+}
+
+#MyCanvas {
+    background: var(--bg);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
