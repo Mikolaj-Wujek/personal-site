@@ -5,8 +5,8 @@ canvas.height = Math.ceil(window.innerHeight / scale)
 
 const ctx = canvas.getContext("2d")
 
-const margin = 27
-const turn = 0.05
+const margin = 40
+const turn = 3
 const spacing = 3
 
 const widths = [2, 3, 3.5, 3.5, 3, 2.5, 2, 1.5, 1, 0.7]
@@ -29,7 +29,7 @@ class Fish {
         this.x = x
         this.y = y
         this.angle = angle
-        this.speed = 0.35
+        this.speed = 30
         this.segments = []
         this.color = palette[Math.floor(Math.random() * palette.length)]
         for (let i = 0; i < 9; i++) {
@@ -37,13 +37,13 @@ class Fish {
         }
     }
 
-    update() {
-        this.angle += (Math.random() - 0.5) *0.2
-        this.x += Math.cos(this.angle) * this.speed
-        this.y += Math.sin(this.angle) * this.speed
+    update(dt) {
+        this.angle += (Math.random() - 0.5) * 0.2 * Math.sqrt(dt * 60)
+        this.x += Math.cos(this.angle) * this.speed * dt
+        this.y += Math.sin(this.angle) * this.speed * dt
 
         if (this.x < margin || this.x > canvas.width - margin || this.y < margin || this.y > canvas.height - margin) {
-            this.angle += turn
+            this.angle += turn * dt
         }
 
         this.segments[0].x = this.x
@@ -121,12 +121,15 @@ for (let i = 0; i < 5; i++) {
     school.push(new Fish(newX, newY, angle))
 }
 
+let last = 0
 
-function loop() {
+function loop(now) {
+    const dt = Math.min((now - last) / 1000, 0.05)
+    last = now
     
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     for (let i = 0; i < school.length; i++) {
-        school[i].update()
+        school[i].update(dt)
         school[i].draw()
 
     }
@@ -135,4 +138,4 @@ function loop() {
     requestAnimationFrame(loop)
 }
 
-loop()
+requestAnimationFrame(loop)
