@@ -1,11 +1,13 @@
 const canvas = document.getElementById("MyCanvas")
 const scale = 3
-canvas.width = Math.ceil(window.innerWidth / scale)
-canvas.height = Math.ceil(window.innerHeight / scale)
-
+function resize() {
+    canvas.width = Math.ceil(window.innerWidth / scale)
+    canvas.height = Math.ceil(window.innerHeight / scale)
+}
+resize()
 const ctx = canvas.getContext("2d")
 
-const margin = 40
+const margin = 50
 const turn = 3
 const spacing = 3
 
@@ -120,6 +122,14 @@ for (let i = 0; i < 5; i++) {
     const angle = Math.random() * Math.PI * 2
     school.push(new Fish(newX, newY, angle))
 }
+
+window.addEventListener("resize", () => {
+    resize()
+    for (const fish of school) {
+        fish.x = Math.min(fish.x, canvas.width - margin)
+        fish.y = Math.min(fish.y, canvas.height - margin)
+    }
+})
 
 let last = 0
 
