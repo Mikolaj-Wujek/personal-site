@@ -32,8 +32,8 @@ class Fish {
         this.speed = 0.35
         this.segments = []
         this.color = palette[Math.floor(Math.random() * palette.length)]
-        for (let i = 0; i < 10; i++) {
-            this.segments.push({x: x, y: y})
+        for (let i = 0; i < 9; i++) {
+            this.segments.push({x: x, y: y, angle: angle})
         }
     }
 
@@ -48,6 +48,7 @@ class Fish {
 
         this.segments[0].x = this.x
         this.segments[0].y = this.y
+        this.segments[0].angle = this.angle
 
         for (let i = 1; i < this.segments.length; i++) {
             const leader = this.segments[i - 1]
@@ -57,6 +58,7 @@ class Fish {
             const dy = leader.y - seg.y
 
             const direction = Math.atan2(dy, dx)
+            this.segments[i].angle = direction
 
             seg.x = leader.x - Math.cos(direction) * spacing
             seg.y = leader.y - Math.sin(direction) * spacing
@@ -64,12 +66,50 @@ class Fish {
     } 
 
     draw() {
+        this.drawFin(1)
+        this.drawFin(-1)
+        this.drawTail()
         for (let i = 0; i < this.segments.length; i++) {
             ctx.beginPath()
             ctx.arc(this.segments[i].x,this.segments[i].y, widths[i], 0, Math.PI * 2)
             ctx.fillStyle = this.color
             ctx.fill()
         }
+    }
+
+    drawFin(side) {
+        const finSeg = this.segments[2]
+        const finWidth = widths[2]
+        const sideAngle = finSeg.angle + (Math.PI / 2 * side)
+
+        const finX = finSeg.x + Math.cos(sideAngle) * finWidth
+        const finY = finSeg.y + Math.sin(sideAngle) * finWidth
+
+        ctx.beginPath()
+        ctx.ellipse(finX, finY, 3.5, 1.8, finSeg.angle + 2 * side, 0, Math.PI * 2)
+        ctx.fillStyle = "white"
+        ctx.fill()
+    }
+
+    drawTail() {
+        const spread = 0.5
+        const length = 6
+        const tail = this.segments[this.segments.length - 1]
+        const backAngle = tail.angle + Math.PI
+
+        const tip1X = tail.x + Math.cos(backAngle + spread) * length
+        const tip1Y = tail.y + Math.sin(backAngle + spread) * length
+
+        const tip2X = tail.x + Math.cos(backAngle - spread) * length
+        const tip2Y = tail.y + Math.sin(backAngle - spread) * length
+
+        ctx.beginPath()
+        ctx.moveTo(tail.x, tail.y)
+        ctx.lineTo(tip1X, tip1Y)
+        ctx.lineTo(tip2X, tip2Y)
+        ctx.closePath()
+        ctx.fillStyle = "white"
+        ctx.fill()
     }
 }
 
@@ -88,6 +128,7 @@ function loop() {
     for (let i = 0; i < school.length; i++) {
         school[i].update()
         school[i].draw()
+
     }
 
 
