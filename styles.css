@@ -114,3 +114,62 @@ h3 {
     image-rendering: pixelated;
 
 }
+
+#projectPage {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.5rem;
+}
+
+.project {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 3px solid var(--red-deep);
+    box-shadow: 6px 6px 0 var(--red-dark);
+    padding: 1.5rem;
+    color: var(--text);
+    transition: transform 0.12s ease-out, box-shadow 0.12s ease-out, border-color 0.12s ease-out;
+}
+
+.project:hover,
+.project:focus-visible {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--red);
+    transform: translate(3px, 3px);
+    box-shadow: 3px 3px 0 var(--red-dark);
+}
+
+.project:active {
+    background: var(--surface);
+    color: var(--text);
+    transform: translate(6px, 6px);
+    box-shadow: 0 0 0 var(--red-dark);
+}
+
+.meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    margin-bottom: 0.75rem;
+
+}
+
+.meta p {
+    margin: 0;
+}
+
+/* .project p {
+    color: var(--text-muted);
+    transition: color 0.12s ease-out;
+}
+
+.project:hover p,
+.project:focus-visible p {
+    color: var(--bg);
+}
+
+.project:active p {
+    color: var(--text);
+} */
