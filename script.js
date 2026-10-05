@@ -115,6 +115,58 @@ class Fish {
     }
 }
 
+const ripples = []
+
+class Ripple {
+    constructor(x, y, delay = 0) {
+        this.x = x
+        this.y = y
+        this.age = -delay
+        this.maxAge = 1.5
+        this.maxRadius = 22
+        this.noise = Array.from({ length: 64}, () => Math.random())
+    }
+
+    update(dt) {
+        this.age += dt
+    }
+
+    get dead() {
+        return this.age >= this.maxAge
+    }
+
+    draw() {
+        if (this.age < 0) return
+
+        const t = this.age / this.maxAge
+        const radius = (1 - (1 - t) ** 2) * this.maxRadius
+        const steps = Math.ceil(radius * 2 * Math.PI)
+        const gap = 0.2 + t * 0.8
+
+        ctx.fillStyle = "white"
+        for (let i = 0; i < steps; i++) {
+            const slot = Math.floor(i / steps * this.noise.length)
+            if (this.noise[slot] < gap) continue
+
+            const a = i / steps * Math.PI * 2
+            const px = Math.round(this.x + Math.cos(a) * radius)
+            const py = Math.round(this.y + Math.sin(a) * radius)
+            ctx.fillRect(px, py, 1, 1)
+        }
+
+    }
+}
+
+window.addEventListener("click", (e) => {
+    const rect = canvas.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / scale
+    const y = (e.clientY - rect.top) / scale
+
+    for (let i = 0; i < 3; i++) {
+        ripples.push(new Ripple(x, y, i * 0.25))
+    }
+})
+
 const school = []
 for (let i = 0; i < 5; i++) {
     const newX = Math.random() * canvas.width
@@ -142,6 +194,11 @@ function loop(now) {
         school[i].update(dt)
         school[i].draw()
 
+    }
+    for (let i = ripples.length - 1; i >= 0; i--) {
+        ripples[i].update(dt)
+        ripples[i].draw()
+        if (ripples[i].dead) ripples.splice(i, 1)
     }
 
 
