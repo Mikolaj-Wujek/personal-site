@@ -1,15 +1,15 @@
 :root {
-    --bg: #0a0a0a;
-    --surface: #171515;
-    --raised: #221f1f;
-    --border: #3a3535;
-    --text-muted: #9a9292;
-    --text: #e6e1e1;
-    --red: #ff4d4f;
-    --red-deep: #b3191c;
-    --red-dark: #5c0f11;
-    --red-muted: #c98a8b;
+    --bg: #0a0a0a;                      /* unchanged: the water */
+    --surface: rgb(27 34 28 / 0.8);     /* was --surface: see-through panel, #1b221c */
+    --raised: rgb(216 211 192 / 0.06);   
+    --rule: #3d4a3d;                    /* was --border: only the dashed h3 line now */
+    --text: #d8d3c0;                    /* muted warm white */
+    --text-muted: #8f9a88;              /* sage grey: dates, meta */
+    --accent: #a7c080;                  /* was --red: links, hover background */
+    --accent-deep: #48623c;             /* was --red-deep: link :active background */
+    --shadow: #141c15;                  /* was --red-dark: floating shadow */
 }
+
 
 body {
     background: var(--bg);

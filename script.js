@@ -13,17 +13,16 @@ const spacing = 3
 
 const widths = [2, 3, 3.5, 3.5, 3, 2.5, 2, 1.5, 1, 0.7]
 const palette = [
-    "#ffb3b5", // light pink
-    "#ff8a8c", // salmon pink
-    "#e8607c", // medium pink
-    "#ff4d4f", // --red
-    "#d93235", // strong red
-    "#b3191c", // --red-deep
-    "#a8385a", // dark pink
-    "#8a1417", // dark red
-    "#5c0f11", // --red-dark
+    "#d5e0b5", // pale leaf
+    "#bcd096", // light sage
+    "#a7c080", // --accent
+    "#8fb573", // spring green
+    "#83c092", // mint
+    "#7a9a5e", // moss
+    "#6b8f71", // eucalyptus
+    "#5a7a4a", // fern
+    "#3f5a3a", // deep forest
 ]
-
 
 
 class Fish {
@@ -89,7 +88,7 @@ class Fish {
 
         ctx.beginPath()
         ctx.ellipse(finX, finY, 3.5, 1.8, finSeg.angle + 2 * side, 0, Math.PI * 2)
-        ctx.fillStyle = "white"
+        ctx.fillStyle = "#d8d3c0"
         ctx.fill()
     }
 
@@ -110,7 +109,7 @@ class Fish {
         ctx.lineTo(tip1X, tip1Y)
         ctx.lineTo(tip2X, tip2Y)
         ctx.closePath()
-        ctx.fillStyle = "white"
+        ctx.fillStyle = "#d8d3c0"
         ctx.fill()
     }
 }
@@ -143,7 +142,7 @@ class Ripple {
         const steps = Math.ceil(radius * 2 * Math.PI)
         const gap = 0.2 + t * 0.8
 
-        ctx.fillStyle = "white"
+        ctx.fillStyle = "#d8d3c0"
         for (let i = 0; i < steps; i++) {
             const slot = Math.floor(i / steps * this.noise.length)
             if (this.noise[slot] < gap) continue
@@ -168,7 +167,7 @@ window.addEventListener("click", (e) => {
 })
 
 const school = []
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 15; i++) {
     const newX = Math.random() * canvas.width
     const newY = Math.random() * canvas.height
     const angle = Math.random() * Math.PI * 2
