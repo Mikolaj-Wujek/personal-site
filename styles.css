@@ -1,15 +1,13 @@
 :root {
-    --bg: #0a0a0a;                      /* unchanged: the water */
-    --surface: rgb(27 34 28 / 0.8);     /* was --surface: see-through panel, #1b221c */
-    --raised: rgb(216 211 192 / 0.06);   
-    --rule: #3d4a3d;                    /* was --border: only the dashed h3 line now */
+    --bg: #0a0a0a;                      /* the water */
+    --surface: rgb(27 34 28 / 0.8);     /* see-through panel */
+    --raised: rgb(216 211 192 / 0.06);  /* posts inside a panel */
+    --rule: #3d4a3d;                    /* dashed h3 line */
     --text: #d8d3c0;                    /* muted warm white */
     --text-muted: #8f9a88;              /* sage grey: dates, meta */
-    --accent: #a7c080;                  /* was --red: links, hover background */
-    --accent-deep: #48623c;             /* was --red-deep: link :active background */
-    --shadow: #141c15;                  /* was --red-dark: floating shadow */
+    --accent: #a7c080;                  /* links, hover background */
+    --accent-deep: #48623c;             /* link :active background */
 }
-
 
 body {
     background: var(--bg);
@@ -21,15 +19,13 @@ body {
     max-width: 40em;
     padding: 2rem;
     font-family: "Space Mono", monospace;
-    line-height: 1.6
+    line-height: 1.6;
 }
 
 .box {
     background: var(--surface);
     text-align: center;
-    border: 3px solid var(--red-deep);
     padding: 1.5rem;
-    box-shadow: 6px 6px 2px var(--red-dark);
 }
 
 .post {
@@ -49,7 +45,7 @@ body {
 }
 
 a {
-    color: var(--red);
+    color: var(--accent);
     text-decoration: none;
     padding: 0 0.25em;
     transition: background-color 0.12s ease-out, color 0.12s ease-out;
@@ -61,7 +57,7 @@ a[aria-current="page"]::before {
 
 a:hover,
 a:focus-visible {
-    background: var(--red);
+    background: var(--accent);
     color: var(--bg);
 }
 
@@ -71,7 +67,7 @@ a:focus-visible {
 }
 
 a:active {
-    background: var(--red-deep);
+    background: var(--accent-deep);
     color: var(--text);
 }
 
@@ -100,7 +96,7 @@ h2 {
 h3 {
     font-size: 1.2rem;
     font-family: "Space Mono", monospace;
-    border-bottom: 2px dashed var(--border);
+    border-bottom: 2px dashed var(--rule);
 }
 
 #MyCanvas {
@@ -112,7 +108,6 @@ h3 {
     width: 100vw;
     height: 100vh;
     image-rendering: pixelated;
-
 }
 
 #projectPage {
@@ -121,31 +116,38 @@ h3 {
     gap: 1.5rem;
 }
 
+/* Each tile spans three rows of the page grid (meta, title, description)
+   and borrows those rows via subgrid, so the rows line up across tiles
+   that sit side by side. */
 .project {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+    row-gap: 0;
     background: var(--surface);
-    border: 3px solid var(--red-deep);
-    box-shadow: 6px 6px 0 var(--red-dark);
     padding: 1.5rem;
     color: var(--text);
-    transition: transform 0.12s ease-out, box-shadow 0.12s ease-out, border-color 0.12s ease-out;
+    transition: transform 0.12s ease-out;
 }
 
+/* Short titles sit on the dashed line instead of leaving a gap above it */
+.project h3 {
+    display: flex;
+    align-items: flex-end;
+}
+
+/* background and color are repeated here to cancel the generic a:hover styles */
 .project:hover,
 .project:focus-visible {
     background: var(--surface);
     color: var(--text);
-    border-color: var(--red);
     transform: translate(3px, 3px);
-    box-shadow: 3px 3px 0 var(--red-dark);
 }
 
 .project:active {
     background: var(--surface);
     color: var(--text);
     transform: translate(6px, 6px);
-    box-shadow: 0 0 0 var(--red-dark);
 }
 
 .meta {
@@ -153,23 +155,8 @@ h3 {
     justify-content: space-between;
     font-size: 0.75rem;
     margin-bottom: 0.75rem;
-
 }
 
 .meta p {
     margin: 0;
 }
-
-/* .project p {
-    color: var(--text-muted);
-    transition: color 0.12s ease-out;
-}
-
-.project:hover p,
-.project:focus-visible p {
-    color: var(--bg);
-}
-
-.project:active p {
-    color: var(--text);
-} */
