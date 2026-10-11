@@ -7,8 +7,11 @@ function resize() {
 resize()
 const ctx = canvas.getContext("2d")
 
-const margin = 50
-const turn = 3
+const edge = 12     
+const turn = 3    
+const steer = 2     
+const arrive = 20    
+const reach = 120    
 const spacing = 3
 
 const widths = [2, 3, 3.5, 3.5, 3, 2.5, 2, 1.5, 1, 0.7]
@@ -25,6 +28,10 @@ const palette = [
 ]
 
 
+function onScreen(x, y) {
+    return x > edge && x < canvas.width - edge && y > edge && y < canvas.height - edge
+}
+
 class Fish {
     constructor(x, y, angle) {
         this.x = x
@@ -36,16 +43,40 @@ class Fish {
         for (let i = 0; i < 9; i++) {
             this.segments.push({x: x, y: y, angle: angle})
         }
+        this.pickTarget()
+    }
+
+
+    pickTarget() {
+        for (let i = 0; i < 20; i++) {
+            const a = Math.random() * Math.PI * 2
+            const d = arrive * 2 + Math.random() * reach
+            this.targetX = this.x + Math.cos(a) * d
+            this.targetY = this.y + Math.sin(a) * d
+            if (onScreen(this.targetX, this.targetY)) return
+        }
+
+        this.targetX = edge + Math.random() * (canvas.width - edge * 2)
+        this.targetY = edge + Math.random() * (canvas.height - edge * 2)
     }
 
     update(dt) {
+        const dx = this.targetX - this.x
+        const dy = this.targetY - this.y
+        if (Math.hypot(dx, dy) < arrive) this.pickTarget()
+
+
+        const want = Math.atan2(this.targetY - this.y, this.targetX - this.x)
+        const diff = Math.atan2(Math.sin(want - this.angle), Math.cos(want - this.angle))
+
+
+        const maxTurn = turn * dt
+        this.angle += Math.max(-maxTurn, Math.min(maxTurn, diff * steer * dt))
+
+
         this.angle += (Math.random() - 0.5) * 0.2 * Math.sqrt(dt * 60)
         this.x += Math.cos(this.angle) * this.speed * dt
         this.y += Math.sin(this.angle) * this.speed * dt
-
-        if (this.x < margin || this.x > canvas.width - margin || this.y < margin || this.y > canvas.height - margin) {
-            this.angle += turn * dt
-        }
 
         this.segments[0].x = this.x
         this.segments[0].y = this.y
@@ -177,8 +208,8 @@ for (let i = 0; i < 15; i++) {
 window.addEventListener("resize", () => {
     resize()
     for (const fish of school) {
-        fish.x = Math.min(fish.x, canvas.width - margin)
-        fish.y = Math.min(fish.y, canvas.height - margin)
+        // The old target may now be off screen, so choose a fresh one
+        fish.pickTarget()
     }
 })
 

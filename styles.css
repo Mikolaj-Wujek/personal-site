@@ -6,7 +6,8 @@
     --text: #d8d3c0;                    /* muted warm white */
     --text-muted: #8f9a88;              /* sage grey: dates, meta */
     --accent: #a7c080;                  /* links, hover background */
-    --accent-deep: #48623c;             /* link :active background */
+    --accent-deep: #48623c;
+    --done: #83c092;             /* link :active background */
 }
 
 body {
@@ -159,4 +160,32 @@ h3 {
 
 .meta p {
     margin: 0;
+}
+
+.date {
+    color: var(--text-muted);
+}
+
+.status::before {
+    content: "[ ] ";
+}
+
+.status.building {
+    color: var(--accent);
+}
+
+.status.building::before {
+    content: "[~] ";
+}
+
+.status.done {
+    color: var(--done);
+}
+
+.status.done::before {
+    content: "[x] ";
+}
+
+.status.planned {
+    color: var(--text-muted);
 }
