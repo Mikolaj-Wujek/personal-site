@@ -25,7 +25,6 @@ body {
 
 .box {
     background: var(--surface);
-    text-align: center;
     padding: 1.5rem;
 }
 
@@ -188,4 +187,44 @@ h3 {
 
 .status.planned {
     color: var(--text-muted);
+}
+
+/*  */
+
+.site-header,
+.site-footer {
+    text-align: center;
+}
+
+.description h2 {
+    margin-bottom: 1rem;
+}
+
+.description > :last-child {
+    margin-bottom: 0;
+}
+
+.links {
+    margin-top: 0;
+}
+
+
+.links a {
+    margin-left: -0.25em;
+}
+
+.aside {
+    color: var(--text-muted);
+}
+
+.note {
+    color: var(--text-muted);
+    border-top: 2px dashed var(--rule);
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+}
+
+::selection {
+    background: var(--accent);
+    color: var(--bg);
 }
